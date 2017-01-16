@@ -1,0 +1,28 @@
+function insertionSort(listElement) {
+	for (var i = 1; i <= listElement.length-1;i++) {
+		var element = listElement[i];
+		var j = i;
+		while (j > 0 && listElement[j - 1] > element) {
+			listElement[j] = listElement[j - 1];
+			j = j-1;
+			listElement[j] = element;
+		}
+	}
+	
+	return listElement;
+}
+
+
+
+
+
+if (!Date.now) {
+    Date.now = function() { return new Date().getTime(); }
+}
+var listToSort = require('./testData.js');
+console.log(listToSort.length + " elements");
+var startTime = Date.now();
+insertionSort(listToSort);
+var endTime = Date.now();
+
+console.log(endTime - startTime + " milliseconds");
