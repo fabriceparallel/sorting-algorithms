@@ -1,30 +1,49 @@
-/**
- * this is broken, need to fix it
- */
-function quickSort(listElement, start, pivot) {
-	var i = start;
-	var y = i+1;
-
-	if (start == pivot) {
+function doQuickSort(listElement, left, right) {
+	if (left >= right) {
 		return listElement;
 	}
 
-	while(y < pivot){
-		if (listElement[y] < listElement[pivot] ) {
-			listElement[++i] += listElement[y];
-			listElement[y] = listElement[i] - listElement[y];
-			listElement[i] -= listElement[y];
-		}
-		y++;
-	}
-	listElement[++i] += listElement[pivot];
-	listElement[pivot] = listElement[i] - listElement[pivot];
-	listElement[i] -= listElement[pivot];
+	var pivot = listElement[Math.round((left+right)/2)];
+	var splitingPoint = partition(listElement, left, right, pivot);
 
-	listElement = quickSort(listElement, -1, i);
-	listElement = quickSort(listElement, i-1, pivot);
+	if (right - left > 2) {
+		var listElement = doQuickSort(listElement, left, splitingPoint-1);
+		var listElement = doQuickSort(listElement, splitingPoint, right);
+	}
 
 	return listElement;
+}
+
+function partition(listElement, left, right, pivot) {
+	while(left <= right) {
+		while (listElement[left] < pivot) {
+			left++;
+		}
+
+		while (listElement[right] > pivot) {
+			right--;
+		}
+
+		if (left<=right) {
+			listElement = swap(listElement, left, right);
+			left++;
+			right--;
+		}
+	}
+
+	return left;
+}
+
+function swap(listElement, left, right) {
+	var c = listElement[left];
+	listElement[left] = listElement[right];
+	listElement[right] = c;
+
+	return listElement;
+}
+
+function quickSort(listElement) {
+	return doQuickSort(listElement, 0, listElement.length-1);
 }
 
 
@@ -37,6 +56,5 @@ console.log(listToSort.length + " elements");
 var startTime = Date.now();
 var result = quickSort(listToSort);
 var endTime = Date.now();
-
 console.log(endTime - startTime + " milliseconds");
 
